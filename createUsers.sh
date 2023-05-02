@@ -22,7 +22,6 @@ awk -F: -v login=1 -v firstname=2 -v lastname=3 -v groups=4 -v password=5 '{
     if( $groups == "" ) {
         print "User " $login " has no group."
         $primary_group = $login
-    
     } else {
         split($groups, group_list, ",")
         primary_group=group_list[1]
@@ -37,6 +36,8 @@ awk -F: -v login=1 -v firstname=2 -v lastname=3 -v groups=4 -v password=5 '{
     }
     
     system("useradd -c \"" $firstname " " $lastname "\" -g \"" primary_group "\" -G \"" $groups "\" -m \"" $login "\"");
+    system("echo "$login":"$password "| chpasswd -e");
+    system("chage -d 0 "$login);
 
     srand();
     files = int(rand() * (10 - 5 + 1)) + 5;
@@ -44,7 +45,6 @@ awk -F: -v login=1 -v firstname=2 -v lastname=3 -v groups=4 -v password=5 '{
         file_size = int(rand() * (50 - 5 + 1)) + 5;
         system("dd if=/dev/urandom of=\"/home/" $login "/file" i "\" bs=" file_size "M count=1");
     }
-
 
 }' users.txt
 
