@@ -3,8 +3,8 @@
 passwd_file="/etc/passwd"
 group_file="/etc/group"
 user_file="users.txt"
-min_size=5000;    # 5 Mo
-max_size=50000;   # 50 Mo
+min_size=5;    # 5 Mo
+max_size=50;   # 50 Mo
 
 if [ ! -f "$user_file" ]; then
     echo "Le fichier source '$user_file' n'existe pas."
@@ -32,20 +32,24 @@ awk -F: -v login=1 -v firstname=2 -v lastname=3 -v groups=4 -v password=5 -v min
                 system("sudo groupadd " group_name)
             }
         }
-
     }
-    
+
     system("useradd -c \"" $firstname " " $lastname "\" -g \"" primary_group "\" -G \"" $groups "\" -m \"" $login "\"");
-    system("echo "$login":"$password "| chpasswd -e");
-    system("chage -d 0 "$login);
+    cmd="echo "$login":"$password" | sudo chpasswd"
+    system(cmd);
+    system("chage -d 0 " $login);
 
     srand();
     files = int(rand() * (10 - 5 + 1)) + 5;
+    file_count = 0;  # Variable pour compter les fichiers créés
+
     for (i = 1; i <= files; i++) {
         file_size = int(rand() * (max_size - min_size + 1)) + min_size;
-        system("dd if=/dev/urandom of=\"/home/" $login "/file" i "\" bs=" file_size " count=1");
+        file_path = "/home/" $login "/file" i;
+        system("dd if=/dev/urandom of=\"" file_path "\" bs=" file_size "M count=1 >/dev/null 2>&1");
+        file_count++;  # Incrémenter le compteur de fichiers
     }
 
+    print "Nombre de fichiers créés : " file_count;
+
 }' $user_file
-
-

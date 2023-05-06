@@ -1,3 +1,8 @@
-adavid:antony:david:esgi,al:Respons11
+adavid:antony:david:esgi,al:123 
 szhang:simon:zhang:esgi,al:Respons11
 qjolli:quentin:jolli:esgi,reseau:Respons22
+eelias:emma:elias:esgi,dev,reseau:Passw0rd#
+ddevi:diana:devi:esgi,dev:Devi_2023
+cchung:claire:chung:esgi,reseau:MyP@ssword
+bbrown:brian:brown:esgi,dev:Secret123
+akim:amine:kim:esgi,reseau:Passw0rd
