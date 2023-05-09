@@ -1,13 +1,11 @@
 #!/bin/bash
 
 format_size() {
-    taille_octets=$1
-    go=$(( (taille_octets + 1073741823) / (1024 ** 3) ))
-    reste=$((taille_octets % (1024 ** 3)))
-    mo=$(( (reste + 1048575) / (1024 ** 2) ))
-    reste=$((reste % (1024 ** 2)))
-    ko=$(( (reste + 1023) / 1024 ))
-    octets=$((reste % 1024))
+    local size=$1
+    local go=$((size / 1024 / 1024))
+    local mo=$((size / 1024))
+    local ko=$((size))
+    local octets=$((size* 1024))
     
     echo "$go Go, $mo Mo, $ko ko et $octets octets"
 }
@@ -15,7 +13,7 @@ format_size() {
 odd_even_sort() {
     local arr=("$@")
     local len=${#arr[@]}
-
+    
     for ((i = 0; i < len - 1; i++)); do
         for ((j = 0; j < len - i - 1; j++)); do
             if ((arr[j] < arr[j + 1])); then
@@ -25,7 +23,7 @@ odd_even_sort() {
             fi
         done
     done
-
+    
     echo "${arr[@]}"
 }
 
@@ -34,14 +32,14 @@ users=$(awk -F: '{print $1}' users.txt)
 
 sizes_users=()
 for user in $users; do
-
+    
     dir_size=$(du -s "/home/$user" | awk '{print $1}')
     sizes_users+=("$dir_size")
-
+    
     formatted_size=$(format_size "$dir_size")
-
+    
     echo "Taille du répertoire personnel de $user : $formatted_size"
-
+    
     echo >> "/home/$user/.bashrc"
     echo "# Affichage de la taille du répertoire personnel" >> "/home/$user/.bashrc"
     echo 'dir_size=$(du -s "$HOME" | awk "{print $1}")' >> "/home/$user/.bashrc"
@@ -65,7 +63,7 @@ for ((i = 0; i < 5; i++)); do
     fi
     printed=$((printed + 1))
     formatted_size=$(format_size "$dir_size")
-    user=$(du -s "/home/"* | awk -v size="$dir_size" -v field="$index" 'BEGIN{FS="\t"} $1 == size {print $2}' | awk -F/ ' NR==1 {print $3}')
+    user=$(du -s "/home/"* | awk -v size="$dir_size" -v field="$index" 'BEGIN{FS="\t"} $1 == size {print $2}')
     echo "$((printed)). Utilisateur: $user | Taille: $formatted_size"
     prev_size=$dir_size
 done
