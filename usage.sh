@@ -14,12 +14,22 @@ odd_even_sort() {
     local arr=("$@")
     local len=${#arr[@]}
     
-    for ((i = 0; i < len - 1; i++)); do
-        for ((j = 0; j < len - i - 1; j++)); do
-            if ((arr[j] < arr[j + 1])); then
-                temp=${arr[j]}
-                arr[j]=${arr[j + 1]}
-                arr[j + 1]=$temp
+    for ((i = 1; i < len - 1; i += 1)); do
+        # Comparaisons impaires-paires
+        for ((x = 1; x < len - 1; x += 2)); do
+            if ((arr[x] > arr[x + 1])); then
+                temp=${arr[x]}
+                arr[x]=${arr[x + 1]}
+                arr[x + 1]=$temp
+            fi
+        done
+        
+        # Comparaisons paires-impaires
+        for ((x = 0; x < len - 1; x += 2)); do
+            if ((arr[x] > arr[x + 1])); then
+                temp=${arr[x]}
+                arr[x]=${arr[x + 1]}
+                arr[x + 1]=$temp
             fi
         done
     done
@@ -59,6 +69,8 @@ for ((i = 0; i < 5; i++)); do
     index=$i
     dir_size=${sorted_sizes[index]}
     if ((dir_size == prev_size)); then
+        index=$((index + 1))
+        i=$((i - 1))
         continue
     fi
     printed=$((printed + 1))
