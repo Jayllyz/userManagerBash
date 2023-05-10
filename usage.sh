@@ -10,6 +10,7 @@ format_size() {
     echo "$go Go, $mo Mo, $ko ko et $octets octets"
 }
 
+#https://www.wikiwand.com/fr/Tri_pair-impair
 odd_even_sort() {
     local arr=("$@")
     local len=${#arr[@]}
@@ -45,34 +46,31 @@ for user in $users; do
     
     dir_size=$(du -s "/home/$user" | awk '{print $1}')
     sizes_users+=("$dir_size")
-    
     formatted_size=$(format_size "$dir_size")
     
     echo "Taille du répertoire personnel de $user : $formatted_size"
     
-    
-    if ! grep -q "# Affichage de la taille du répertoire personnel" ".bashrc"; then
-        printf "\n" >> ".bashrc"
-        printf 'format_size() {\n' >> ".bashrc"
-        printf '    local size=$1\n' >> ".bashrc"
-        printf '    local go=$((size / 1024 / 1024))\n' >> ".bashrc"
-        printf '    local mo=$((size / 1024))\n' >> ".bashrc"
-        printf '    local ko=$((size))\n' >> ".bashrc"
-        printf '    local octets=$((size * 1024))\n' >> ".bashrc"
-        printf '    echo "$go Go, $mo Mo, $ko ko et $octets octets"\n' >> ".bashrc"
-        printf '}\n' >> ".bashrc"
-        printf "\n" >> ".bashrc"
-        printf "# Affichage de la taille du répertoire personnel\n" >> ".bashrc"
-        printf 'dir_size=$(du -s "$HOME" | awk "{print \$1}")\n' >> ".bashrc"
-        printf 'formatted_size=$(format_size "$dir_size")\n' >> ".bashrc"
-        printf 'echo "Taille de votre répertoire personnel : $formatted_size."\n' >> ".bashrc"
-        printf 'if ((dir_size > 102400)); then\n' >> ".bashrc"
-        printf '    echo "Attention : votre répertoire personnel occupe plus de 100Mo!"\n' >> ".bashrc"
-        printf 'fi\n' >> ".bashrc"
+    if ! grep -q "# Affichage de la taille du répertoire personnel" "/home/$user/.bashrc"; then
+        printf "\n" >> "/home/$user/.bashrc"
+        printf 'format_size() {\n' >> "/home/$user/.bashrc"
+        printf '    local size=$1\n' >> "/home/$user/.bashrc"
+        printf '    local go=$((size / 1024 / 1024))\n' >> "/home/$user/.bashrc"
+        printf '    local mo=$((size / 1024))\n' >> "/home/$user/.bashrc"
+        printf '    local ko=$((size))\n' >> "/home/$user/.bashrc"
+        printf '    local octets=$((size * 1024))\n' >> "/home/$user/.bashrc"
+        printf '    echo "$go Go, $mo Mo, $ko ko et $octets octets"\n' >> "/home/$user/.bashrc"
+        printf '}\n' >> "/home/$user/.bashrc"
+        printf "\n" >> "/home/$user/.bashrc"
+        printf "# Affichage de la taille du répertoire personnel\n" >> "/home/$user/.bashrc"
+        printf 'dir_size=$(du -s "$HOME" | awk "{print \$1}")\n' >> "/home/$user/.bashrc"
+        printf 'formatted_size=$(format_size "$dir_size")\n' >> "/home/$user/.bashrc"
+        printf 'echo "Taille de votre répertoire personnel : $formatted_size."\n' >> "/home/$user/.bashrc"
+        printf 'if ((dir_size > 102400)); then\n' >> "/home/$user/.bashrc"
+        printf '    echo "Attention : votre répertoire personnel occupe plus de 100Mo!"\n' >> "/home/$user/.bashrc"
+        printf 'fi\n' >> "/home/$user/.bashrc"
     fi
-    
-    
 done
+
 
 sorted_sizes=($(odd_even_sort "${sizes_users[@]}"))
 

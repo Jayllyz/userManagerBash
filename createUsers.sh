@@ -2,7 +2,7 @@
 
 user_file="users.txt"
 min_size=5;    # 5 Mo
-max_size=10;   # 50 Mo
+max_size=50;   # 50 Mo
 
 if [ ! -f "$user_file" ]; then
     echo "Le fichier source '$user_file' n'existe pas."
@@ -19,6 +19,10 @@ awk -F: -v login=1 -v firstname=2 -v lastname=3 -v groups=4 -v password=5 -v min
 
     if( $groups == "" ) {
         primary_group = $login
+        if (system("getent group " primary_group " >/dev/null 2>&1") != 0) {
+            print "Creating group " primary_group "..."
+            system("sudo groupadd " primary_group)
+        }
     } else {
         split($groups, group_list, ",")
         primary_group=group_list[1]
@@ -31,9 +35,8 @@ awk -F: -v login=1 -v firstname=2 -v lastname=3 -v groups=4 -v password=5 -v min
         }
     }
 
-    system("useradd -c \"" $firstname " " $lastname "\" -g \"" primary_group "\" -G \"" $groups "\" -m \"" $login "\"");
-    cmd="echo \"" $login ":" $password "\" | sudo chpasswd"
-    system(cmd);
+    system("useradd -s /bin/bash -c \"" $firstname " " $lastname "\" -g \"" primary_group "\" -G \"" $groups "\" -m \"" $login "\"");
+    system("echo \"" $login ":" $password "\" | sudo chpasswd");
     system("chage -d 0 " $login);
 
     srand();

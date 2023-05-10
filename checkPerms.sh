@@ -5,7 +5,6 @@ new="new_list.txt"
 
 edit_date() {
     file="$1"
-    date=$(sudo stat -c %y "$file")
     if date=$(sudo stat -c %y "$file"); then
         echo "Date de modification : $date"
     else
@@ -33,6 +32,5 @@ if [ -f "$old" ]; then
 else
     echo "La liste précédente n'existe pas. Une nouvelle liste a été créée."
 fi
-
 
 cp "$new" "$old"
