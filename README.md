@@ -1,6 +1,6 @@
 # userManagerBash
 
-[![Super-Linter](https://github.com/jayllyz/userManagerBash/actions/workflows/lint.yml/badge.svg)](https://github.com/marketplace/actions/super-linter)
+[![Lint](https://github.com/Jayllyz/userManagerBash/actions/workflows/lint.yml/badge.svg)](https://github.com/Jayllyz/userManagerBash/actions/workflows/lint.yml)
 
 Pour éxécuter chaque script, il faut utiliser la commande suivante :
 
