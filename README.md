@@ -1,5 +1,7 @@
 # userManagerBash
 
+[![Super-Linter](https://github.com/jayllyz/userManagerBash/actions/workflows/lint.yml/badge.svg)](https://github.com/marketplace/actions/super-linter)
+
 Pour éxécuter chaque script, il faut utiliser la commande suivante :
 
 ```bash
@@ -13,7 +15,7 @@ Ce script permet de créer tout les utilisateurs à partir d'un fichier texte.
 
 La syntaxe du fichier texte est la suivante :
 
-```
+```bash
 login:firtname:lastname:group1,group2,group3:password
 ```
 

@@ -1,15 +1,15 @@
 #!/bin/bash
 
 user_file="users.txt"
-min_size=5;    # 5 Mo
-max_size=50;   # 50 Mo
+min_size=5  # 5 Mo
+max_size=50 # 50 Mo
 
-if [ ! -f "$user_file" ]; then
-    echo "Le fichier source '$user_file' n'existe pas."
+if [[ ! -f "${user_file}" ]]; then
+    echo "Le fichier source ${user_file} n'existe pas."
     exit 1
 fi
 
-awk -F: -v login=1 -v firstname=2 -v lastname=3 -v groups=4 -v password=5 -v min_size=$min_size -v max_size=$max_size '{
+awk -F: -v login=1 -v firstname=2 -v lastname=3 -v groups=4 -v password=5 -v min_size="${min_size}" -v max_size="${max_size}" '{
     print "Création de " $login "..."
 
     if (system("id -u " $login " >/dev/null 2>&1") == 0) {
@@ -52,4 +52,4 @@ awk -F: -v login=1 -v firstname=2 -v lastname=3 -v groups=4 -v password=5 -v min
 
     print "Création de " file_count " fichiers pour " $login ".";
 
-}' $user_file
+}' "${user_file}"
